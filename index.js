@@ -7,8 +7,16 @@ let qrCodeData = 'Aún no se ha generado el código QR... Espera unos segundos y
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
-        // Parche de memoria para evitar que Render se apague
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
+        // DIETA EXTREMA: Comandos para que Chrome use la mínima memoria posible
+        args: [
+            '--no-sandbox', 
+            '--disable-setuid-sandbox', 
+            '--disable-dev-shm-usage', 
+            '--disable-gpu',
+            '--no-first-run',
+            '--no-zygote',
+            '--single-process' 
+        ]
     }
 });
 
@@ -31,7 +39,6 @@ client.on('ready', () => {
     console.log(qrCodeData);
 });
 
-// RAYOS X: Aquí veremos si el bot realmente escucha los mensajes
 client.on('message', async (message) => {
     console.log('📩 Mensaje recibido:', message.body); 
 
